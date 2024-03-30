@@ -8,6 +8,28 @@ workspace("SecretsManager")
 	flags("MultiProcessorCompile")
 
 	startproject("CLI")
+	project("Networking")
+		location("Networking/")
+		warnings("Extra")
+
+		kind("StaticLib")
+		common:outDirs(true)
+
+		includedirs({ "%{prj.location}/Inc/" })
+		files({
+			"%{prj.location}/Inc/**",
+			"%{prj.location}/Src/**"
+		})
+		removefiles({ "*.DS_Store" })
+
+		pkgdeps({ "commonbuild" })
+
+		filter("system:windows")
+			links({ "Ws2_32.lib" })
+		filter({})
+
+		common:addActions()
+
 	project("SecretsLib")
 		location("SecretsLib/")
 		warnings("Extra")
@@ -22,25 +44,9 @@ workspace("SecretsManager")
 		})
 		removefiles({ "*.DS_Store" })
 
-		pkgdeps({ "commonbuild", "backtrace" })
-
-		common:addActions()
-
-	project("IPC")
-		location("IPC/")
-		warnings("Extra")
-
-		kind("StaticLib")
-		common:outDirs(true)
-
-		includedirs({ "%{prj.location}/Inc/" })
-		files({
-			"%{prj.location}/Inc/**",
-			"%{prj.location}/Src/**"
-		})
-		removefiles({ "*.DS_Store" })
-
-		pkgdeps({ "commonbuild", "backtrace" })
+		pkgdeps({ "commonbuild" })
+		externalincludedirs({ "%{wks.location}/Networking/Inc/" })
+		links({ "Networking" })
 
 		common:addActions()
 
@@ -59,11 +65,11 @@ workspace("SecretsManager")
 		pkgdeps({ "commonbuild", "backtrace" })
 		externalincludedirs({
 			"%{wks.location}/SecretsLib/Inc/",
-			"%{wks.location}/IPC/Inc/"
+			"%{wks.location}/Networking/Inc/"
 		})
 		links({
 			"SecretsLib",
-			"IPC"
+			"Networking"
 		})
 
 		common:addActions()
@@ -81,8 +87,8 @@ workspace("SecretsManager")
 		removefiles({ "*.DS_Store" })
 
 		pkgdeps({ "commonbuild", "backtrace" })
-		externalincludedirs({ "%{wks.location}/IPC/Inc/" })
-		links({ "IPC" })
+		externalincludedirs({ "%{wks.location}/Networking/Inc/" })
+		links({ "Networking" })
 
 		common:addActions()
 
@@ -99,7 +105,7 @@ workspace("SecretsManager")
 		removefiles({ "*.DS_Store" })
 
 		pkgdeps({ "commonbuild", "backtrace" })
-		externalincludedirs({ "%{wks.location}/IPC/Inc/" })
-		links({ "IPC" })
+		externalincludedirs({ "%{wks.location}/Networking/Inc/" })
+		links({ "Networking" })
 
 		common:addActions()
